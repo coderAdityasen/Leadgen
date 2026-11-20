@@ -1,0 +1,67 @@
+# Render Blueprint: the Lead Desk server on Render's free plan.
+# Render -> New -> Blueprint -> pick this repository. Fill in the values marked `sync: false`
+# when Render asks (see docs/deploy-free.md).
+services:
+  - type: web
+    name: leaddesk-server
+    runtime: node
+    plan: free
+    # Put the server next to your Turso databases (every request makes several database calls).
+    # Turso aws-us-east-1  <->  Render virginia   is the recommended free pairing.
+    region: virginia
+    # --include=dev: the build needs TypeScript and esbuild even though NODE_ENV=production.
+    buildCommand: npm ci --include=dev && npm run build:server
+    startCommand: cd apps/server && node dist/index.js
+    healthCheckPath: /api/v1/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: TRUST_PROXY
+        value: "true"
+      - key: LEAD_DESK_COOKIE_SECURE
+        value: "true"
+      - key: LEAD_DESK_SENDING_ENABLED
+        value: "true"
+      - key: LEAD_DESK_AI_ENABLED
+        value: "true"
+      # --- generated once by Render; copy it somewhere safe (needed again when moving to a VPS) ---
+      - key: LEAD_DESK_DATA_KEY
+        generateValue: true
+      # --- the admin login, created on the first start of an empty database (no setup page) ---
+      # Ignored once an admin exists: change the password in the dashboard (Settings) after that.
+      - key: LEAD_DESK_ADMIN_EMAIL
+        sync: false
+      - key: LEAD_DESK_ADMIN_PASSWORD
+        sync: false
+      - key: LEAD_DESK_ADMIN_NAME
+        sync: false
+      # --- Turso (see docs/deploy-free.md, step 1) ---
+      - key: DATABASE_URL
+        sync: false
+      - key: CONTROL_DATABASE_URL
+        sync: false
+      - key: DATABASE_AUTH_TOKEN
+        sync: false
+      - key: TURSO_ORG
+        sync: false
+      - key: TURSO_API_TOKEN
+        sync: false
+      - key: TURSO_GROUP
+        value: default
+      # --- your dashboard address on Cloudflare Pages, e.g. https://leaddesk.pages.dev ---
+      - key: LEAD_DESK_PUBLIC_URL
+        sync: false
+      # --- optional ---
+      - key: XAI_API_KEY
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false

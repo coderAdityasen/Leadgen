@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Lead Desk Connector",
+  "version": "0.1.0",
+  "description": "Sends and receives WhatsApp Web text for a single-operator Lead Desk.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy0zesY4p8Da0Fk2AhNnPh64A/RF48PZDapfy+8a0nlCkrrqbq1eeBxPn2J16NZcnppV11LUcV0ijpboaTgj7WT0EwzR8mXwqbsXkpbFMiZgmFJFnYGldgt3xaN09ea5mrfhi02FR5OaVijJc6ptvFOdE6oVB3HyS1dcOthf+G4CsYaYUjpt+O4a09zrH6fe/JvdDAqgy98WITK5qGILI51lIK8Ynz0gdO1O1oaN6HLy4KmOo7CE4a9RindW5bspqolGOk+pmoj00Oi5XD6MyDfd6YG6p0KC0urg4uWYAiuSLtTQXB77lTYasvX6TIgWoY6sy/gQ0rSMlwE/AAOiJdQIDAQAB",
+  "permissions": [
+    "storage",
+    "alarms",
+    "tabs",
+    "scripting",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://web.whatsapp.com/*",
+    "http://127.0.0.1:8787/*",
+    "http://[::1]:8787/*",
+    "http://localhost:8787/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://web.whatsapp.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Lead Desk",
+    "default_popup": "popup.html"
+  },
+  "optional_host_permissions": [
+    "https://*/*"
+  ]
+}

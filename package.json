@@ -1,0 +1,27 @@
+{
+  "name": "lead-desk",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:server": "npm -w @leaddesk/server run dev",
+    "dev:web": "npm -w @leaddesk/web run dev",
+    "build:web": "npm -w @leaddesk/web run build",
+    "build:extension": "npm -w @leaddesk/extension run build",
+    "build:server": "npm -w @leaddesk/server run build",
+    "build": "npm run build:web && npm run build:extension && npm run build:server",
+    "test": "npm -w @leaddesk/server run test",
+    "typecheck": "npm -w @leaddesk/shared run typecheck && npm -w @leaddesk/server run typecheck && npm -w @leaddesk/web run typecheck && npm -w @leaddesk/extension run typecheck",
+    "build:static": "npm -w @leaddesk/web run build:static",
+    "test:libsql": "npm -w @leaddesk/server run test:libsql",
+    "admin:create": "npm -w @leaddesk/server run admin:create --",
+    "admin:reset-password": "npm -w @leaddesk/server run admin:reset-password --"
+  }
+}

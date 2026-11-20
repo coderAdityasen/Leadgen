@@ -1,0 +1,140 @@
+LEAD DESK — LEARN THESE BEFORE READING THE CODE
+================================================
+
+Only the code that is in the repo today. Search the phrase, then open
+the files on the "Read" line.
+
+What exists today: an npm workspace, a Fastify server with one health
+route, a Vite + React page, and a Chrome extension that builds and
+loads. Shared types are declared. Nothing sends WhatsApp, stores data,
+or calls a model yet.
+
+
+01. JavaScript modules and async/await
+Search: "JavaScript ES modules import export tutorial"
+Search: "JavaScript async await explained"
+Read: apps/server/src/index.ts, apps/extension/build.mjs
+
+02. npm workspaces
+Search: "npm workspaces monorepo tutorial"
+Read: package.json, apps/server/package.json, apps/web/package.json,
+apps/extension/package.json, packages/shared/package.json
+The root scripts use `npm -w <package> run <script>`.
+
+03. TypeScript, and the flags in tsconfig.base.json
+Search: "TypeScript tutorial for JavaScript developers"
+Search: "TypeScript strict noUncheckedIndexedAccess verbatimModuleSyntax"
+Read: tsconfig.base.json, then each tsconfig.json that says "extends"
+
+04. TypeScript imports that end in .js
+Search: "TypeScript NodeNext moduleResolution import js extension"
+Search: "TypeScript import type explained"
+Read: apps/server/src/app.ts, apps/server/src/index.ts,
+packages/shared/src/index.ts, apps/server/tsconfig.json
+The files on disk are .ts. The imports say .js. That is correct for
+"module": "NodeNext". `import type` is how types are imported here.
+
+05. TypeScript unions and literal types
+Search: "TypeScript discriminated union tutorial"
+Search: "TypeScript literal types as const"
+Read: packages/shared/src/protocol.ts, packages/shared/src/types.ts
+These files only declare types. No runtime code uses them yet.
+
+06. Node path, fs, cwd, and process.env
+Search: "Node.js fs path process.cwd tutorial"
+Search: "Node.js process.env environment variables"
+Read: apps/server/src/app.ts
+LOG_LEVEL is the only env var this code reads.
+
+07. import.meta.url instead of __dirname
+Search: "Node.js ESM import.meta.url fileURLToPath dirname"
+Read: apps/extension/build.mjs
+
+08. HTTP: method, status, JSON, headers
+Search: "HTTP methods status codes headers JSON explained"
+Read: apps/server/src/routes/health.ts, apps/server/src/app.ts
+GET /api/v1/health returns { ok, version }. Other API paths return
+JSON 404. HTML responses set a Content-Security-Policy header.
+
+09. Fastify
+Search: "Fastify tutorial routes plugins listen"
+Read: apps/server/src/app.ts, apps/server/src/index.ts,
+apps/server/src/routes/health.ts
+Look for Fastify(), register(), get(), listen(), setNotFoundHandler(),
+trustProxy, and bodyLimit.
+
+10. Why a refresh of a page route returns index.html
+Search: "SPA fallback index.html client side routing"
+Read: apps/server/src/app.ts (setNotFoundHandler), apps/web/vite.config.ts
+(outDir is ../server/public)
+
+11. Content-Security-Policy
+Search: "Content Security Policy CSP default-src script-src explained"
+Read: the header string in apps/server/src/app.ts
+
+12. 127.0.0.1 and ::1
+Search: "IPv4 127.0.0.1 vs IPv6 ::1 localhost"
+Read: apps/server/src/index.ts
+The server binds port 8787 on both addresses.
+
+13. React function components
+Search: "React 18 function components JSX createRoot StrictMode"
+Read: apps/web/index.html, apps/web/src/main.tsx, apps/web/src/App.tsx,
+apps/web/tsconfig.json ("jsx": "react-jsx")
+
+14. Vite
+Search: "Vite React TypeScript dev server proxy build"
+Read: apps/web/vite.config.ts, apps/web/package.json
+Dev server is port 5173 and proxies /api to http://127.0.0.1:8787.
+
+15. CSS variables and grid
+Search: "CSS custom properties variables tutorial"
+Search: "CSS grid two column layout"
+Read: apps/web/src/theme.css
+
+16. Chrome extension Manifest V3
+Search: "Chrome extension Manifest V3 tutorial load unpacked"
+Read: apps/extension/manifest.json, apps/extension/src/background.ts,
+apps/extension/src/content.ts
+background.service_worker is the worker. content_scripts run on
+https://web.whatsapp.com/* at document_idle.
+
+17. Extension worlds: isolated content script and MAIN world
+Search: "Chrome extension content script isolated world vs MAIN world"
+Search: "chrome.scripting.executeScript world MAIN"
+Read: apps/extension/src/probe-wpp.ts, apps/extension/src/page-bridge.ts
+probe-wpp.ts records whether globalThis.WPP already exists.
+page-bridge.ts stops if that flag is set, and stops if the origin is
+not https://web.whatsapp.com. Nothing injects these files yet.
+
+18. esbuild
+Search: "esbuild multiple entry points bundle typescript"
+Read: apps/extension/build.mjs
+It writes background.js, content.js, probe-wpp.js, and page-bridge.js
+into apps/extension/dist and copies manifest.json there.
+
+19. The "key" field in manifest.json
+Search: "Chrome extension manifest key field stable extension id"
+Read: apps/extension/manifest.json
+That long string keeps the extension id the same across reloads.
+
+
+After 01–19, read the files in this order:
+
+  package.json
+  tsconfig.base.json
+  apps/server/src/index.ts
+  apps/server/src/app.ts
+  apps/server/src/routes/health.ts
+  apps/web/vite.config.ts
+  apps/web/src/main.tsx
+  apps/web/src/App.tsx
+  apps/web/src/theme.css
+  apps/extension/manifest.json
+  apps/extension/build.mjs
+  apps/extension/src/background.ts
+  apps/extension/src/content.ts
+  apps/extension/src/probe-wpp.ts
+  apps/extension/src/page-bridge.ts
+  packages/shared/src/protocol.ts
+  packages/shared/src/types.ts

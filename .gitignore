@@ -1,0 +1,21 @@
+node_modules/
+dist/
+data/
+.env
+*.sqlite
+*.sqlite-*
+.DS_Store
+coverage/
+
+# Extension build output (vendor/ is copied from node_modules during build)
+apps/extension/vendor/
+
+# Vite build output lives here; keep the directory tracked via .gitkeep
+apps/server/public/*
+!apps/server/public/.gitkeep
+
+
+# playright testing
+.playwright-mcp/*
+# Static dashboard build (Cloudflare Pages)
+apps/web/dist/
