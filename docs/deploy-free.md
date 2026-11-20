@@ -18,6 +18,11 @@ Extension ─▶ Render free web service (Lead Desk server, Node 22)
   stays on the dashboard's own address (no CORS, no cross-site cookies).
 - The **Chrome extension** talks to Render directly.
 
+> **Simplest setup: skip Cloudflare.** `render.yaml` also builds the dashboard, so the Render
+> service serves the whole app at its own address (`https://<service>.onrender.com`): login, admin
+> console and client desk. Do steps 0–3 and 5–7 below; step 4 (Cloudflare Pages) is optional. Use
+> the Render address everywhere (browser, extension, `LEAD_DESK_PUBLIC_URL`).
+
 When you outgrow the free plans, move everything to a VPS with one command:
 see [upgrade-to-vps.md](upgrade-to-vps.md).
 

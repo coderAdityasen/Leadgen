@@ -2,6 +2,9 @@ node_modules/
 dist/
 data/
 .env
+# Any other env file (e.g. .env.render with the Render values) is private too; only the template is shared.
+.env.*
+!.env.example
 *.sqlite
 *.sqlite-*
 .DS_Store

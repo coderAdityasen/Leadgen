@@ -10,7 +10,9 @@ services:
     # Turso aws-us-east-1  <->  Render virginia   is the recommended free pairing.
     region: virginia
     # --include=dev: the build needs TypeScript and esbuild even though NODE_ENV=production.
-    buildCommand: npm ci --include=dev && npm run build:server
+    # build:web puts the dashboard in apps/server/public, so this one service serves the whole app
+    # (login, admin console, client desk) at its own address. Cloudflare Pages is then optional.
+    buildCommand: npm ci --include=dev && npm run build:web && npm run build:server
     startCommand: cd apps/server && node dist/index.js
     healthCheckPath: /api/v1/health
     autoDeploy: true
